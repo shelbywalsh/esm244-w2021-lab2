@@ -1,0 +1,49 @@
+---
+title: "lab2"
+author: "Shelby Walsh"
+date: "1/13/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(janitor)
+library(here)
+library(palmerpenguins)
+library(ggfortify)
+library(readxl)
+library(gghighlight)
+library(lubridate)
+library(plotly)
+library(patchwork)
+```
+
+### Part 1: PCA with penguins
+
+```{r}
+penguin_pca <- penguins %>% 
+  select(body_mass_g, ends_with("_mm")) %>% 
+  drop_na() %>% 
+  scale() %>% 
+  prcomp()
+
+penguin_pca$rotation
+
+penguin_complete <- penguins %>% 
+  drop_na(body_mass_g, ends_with("_mm"))
+
+autoplot(penguin_pca,
+         data = penguin_complete,
+         colour = 'species',
+         loadings = TRUE,
+         loadings.label = TRUE,
+         loadings.colour = "black",
+         loadings.label.colour = "black",
+         loadings.label.vjust = -0.5
+         ) +
+  scale_color_manual(values = c("blue","purple","orange")) +
+  scale_fill_manual(values = c("blue","purple","orange")) +
+  theme_minimal()
+```
+
